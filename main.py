@@ -42,8 +42,8 @@ class Window(QMainWindow, Ui_MainWindow):
         self.button4.clicked.connect(self.setPosition4)
         self.upButton.pressed.connect(self.moveUp)
         self.upButton.released.connect(self.stopMove)
-        self.downButton.pressed.connect(self.moved)
-        self.downbutton.released.connect(self.stopMove)
+        self.downButton.pressed.connect(self.moveDown)
+        self.downButton.released.connect(self.stopMove)
 
         self.actionSet_Position_1.triggered.connect(self.storePosition1)
 
