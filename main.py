@@ -65,39 +65,69 @@ class Window(QMainWindow, Ui_MainWindow):
         self.timer.start(500)
 
     def getHeight(self):
-        self.height = self.table.read_register(TABLE_HEIGHT_ADDRESS, 1)
+        self.height = self.readRegister(TABLE_HEIGHT_ADDRESS, 0)
         self.heightLCD.display(self.height)
 
     def setPosition1(self):
-        self.instrument.write_register(BUTTON_PRESS_ADDRESS, 1, 1)
+        self.writeRegister(BUTTON_PRESS_ADDRESS, 1, 0)
+        height = self.readRegister(USER_POS_1_ADDRESS,0)
+        self.heightLCD.display(height)
+        print("go to preset 1:"+str(height)+" cm")
         
     def setPosition2(self):
-        self.instrument.write_register(BUTTON_PRESS_ADDRESS, 2, 1)
+        self.writeRegister(BUTTON_PRESS_ADDRESS, 2, 0)
+        height = self.readRegister(USER_POS_2_ADDRESS,0)
+        self.heightLCD.display(height)
+        print("go to preset 2:"+str(height)+" cm")
     
     def setPosition3(self):
-        self.instrument.write_register(BUTTON_PRESS_ADDRESS, 3, 1)
+        self.writeRegister(BUTTON_PRESS_ADDRESS, 3, 0)
+        height = self.readRegister(USER_POS_3_ADDRESS,0)
+        self.heightLCD.display(height)
+        print("go to preset 3:"+str(height)+" cm")
 
     def setPosition4(self):
-        self.instrument.write_register(BUTTON_PRESS_ADDRESS, 4, 1)
+        self.writeRegister(BUTTON_PRESS_ADDRESS, 4, 0)
+        height = self.readRegister(USER_POS_4_ADDRESS,0)
+        self.heightLCD.display(height)
+        print("go to preset 4:"+str(height)+" cm")
+
 
     def moveUp(self):
-        self.instrument.write_register(BUTTON_PRESS_ADDRESS, 5, 1)
+        self.writeRegister(BUTTON_PRESS_ADDRESS, 5, 0)
+        #self.writeRegister(BUTTON_PRESS_ADDRESS, 5, 0)
 
     def moveDown(self):
-        self.instrument.write_register(BUTTON_PRESS_ADDRESS, 6, 1)
+        self.writeRegister(BUTTON_PRESS_ADDRESS, 6, 0)
     
     def stopMove(self):
-        self.instrument.write_register(BUTTON_PRESS_ADDRESS, 0, 1)
+        self.writeRegister(BUTTON_PRESS_ADDRESS, 0, 0)
     
     def storePosition1(self):
-        self.instrument.write_register(USER_POS_1_ADDRESS, self.height, 1)
+        self.writeRegister(USER_POS_1_ADDRESS, self.height, 0)
     def storePosition2(self):
-        self.instrument.write_register(USER_POS_2_ADDRESS, self.height, 1)
+        self.writeRegister(USER_POS_2_ADDRESS, self.height, 0)
     def storePosition3(self):
-        self.instrument.write_register(USER_POS_3_ADDRESS, self.height, 1)
+        self.writeRegister(USER_POS_3_ADDRESS, self.height, 0)
     def storePosition4(self):
-        self.instrument.write_register(USER_POS_4_ADDRESS, self.height, 1)
+        self.writeRegister(USER_POS_4_ADDRESS, self.height, 0)
 
+    def readRegister(self,*args):
+        try:
+            answer = self.table.read_register(*args)
+        except Exception as error:
+            answer = None
+            # handle the exception
+            print("An exception occurred:", type(error).__name__)
+        return answer
+    
+    def writeRegister(self, *args):
+        print("Writeregister"+str(args))
+        try:
+            self.table.write_register(*args)
+        except Exception as error:
+            # handle the exception
+            print("An exception occurred:", type(error).__name__)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
