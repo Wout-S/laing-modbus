@@ -44,6 +44,7 @@ class Window(QMainWindow, Ui_MainWindow):
         self.upButton.released.connect(self.stopMove)
         self.downButton.pressed.connect(self.moveDown)
         self.downButton.released.connect(self.stopMove)
+        self.stopButton.clicked.connect(self.stopMove)
 
         self.actionSet_Position_1.triggered.connect(self.storePosition1)
 
@@ -63,6 +64,10 @@ class Window(QMainWindow, Ui_MainWindow):
         self.table.serial.baudrate = BAUDRATE 
         self.table.serial.stopbits = 2
         self.timer.start(500)
+        self.preset1.display(self.readRegister(USER_POS_1_ADDRESS,0))
+        self.preset2.display(self.readRegister(USER_POS_2_ADDRESS,0))
+        self.preset3.display(self.readRegister(USER_POS_3_ADDRESS,0))
+        self.preset4.display(self.readRegister(USER_POS_4_ADDRESS,0))
 
     def getHeight(self):
         self.height = self.readRegister(TABLE_HEIGHT_ADDRESS, 0)
@@ -105,12 +110,16 @@ class Window(QMainWindow, Ui_MainWindow):
     
     def storePosition1(self):
         self.writeRegister(USER_POS_1_ADDRESS, self.height, 0)
+        self.preset1.display(self.readRegister(USER_POS_1_ADDRESS,0))
     def storePosition2(self):
         self.writeRegister(USER_POS_2_ADDRESS, self.height, 0)
+        self.preset2.display(self.readRegister(USER_POS_2_ADDRESS,0))
     def storePosition3(self):
         self.writeRegister(USER_POS_3_ADDRESS, self.height, 0)
+        self.preset3.display(self.readRegister(USER_POS_3_ADDRESS,0))
     def storePosition4(self):
         self.writeRegister(USER_POS_4_ADDRESS, self.height, 0)
+        self.preset4.display(self.readRegister(USER_POS_4_ADDRESS,0))
 
     def readRegister(self,*args):
         try:
